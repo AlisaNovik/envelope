@@ -46,8 +46,8 @@ class N_max_strategy(abstractStrategy):
         for i in self.envelopes:
             if num >= self.N:
                 break
-            if i > max:
-                max = i
+            if i.money > max:
+                max = i.money
                 num += 1
             self.envelopes[i].used = True
         return max
@@ -57,3 +57,17 @@ class More_then_N_percent_group_strategy(abstractStrategy):
     def __init__(self, envelopes, percent):
         self.envelopes = envelopes
         self.percent = percent
+
+    def play(self):
+        num = int(len(self.envelopes)*self.percent)
+        max = 0
+        for i in range(num):
+            if self.envelopes[i].money > max:
+                max = self.envelopes[i].money
+            self.envelopes[i].used = True
+        for j in range(num, len(self.envelopes)):
+            if self.envelopes[j].money > max:
+                return self.envelopes[j]
+            self.envelopes[j].used = True
+    def display(self):
+        return "find the envelope with more money that in the highest of N% group"
