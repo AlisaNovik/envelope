@@ -1,11 +1,15 @@
 from  abc import ABC
 import random
 class abstractStrategy(ABC):
+    """
+    abstract class all other classes inherit from
+    """
     def display(self):
         pass
     def play(self):
         pass
 class BaseStrategy(abstractStrategy):
+    # user select manually envelopes
     def __init__(self, envelopes):
         self.envelopes = envelopes
 
@@ -26,6 +30,7 @@ class BaseStrategy(abstractStrategy):
 
 
 class Automatic_BaseStrategy:
+    # random selection of envelop
     def __init__(self, envelopes):
         self.envelopes = envelopes
 
@@ -40,6 +45,7 @@ class Automatic_BaseStrategy:
 
 
 class N_max_strategy(abstractStrategy):
+    # return envelope after N max values (defualt N=3)
     def __init__(self, envelopes, N = None):
         self.envelopes = envelopes
         if N is None:# set defualt
@@ -66,9 +72,10 @@ class N_max_strategy(abstractStrategy):
 
 
 class More_then_N_percent_group_strategy(abstractStrategy):
+    # return envelope with more money that in the highest of N% group
     def __init__(self, envelopes, percent):
         self.envelopes = envelopes
-        self.percent = percent
+        self.percent = percent # default is 0.25%
 
     def play(self):
         num = int(len(self.envelopes)*self.percent)
