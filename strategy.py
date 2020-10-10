@@ -1,4 +1,5 @@
 from  abc import ABC
+import random
 class abstractStrategy(ABC):
     def display(self):
         pass
@@ -24,9 +25,18 @@ class BaseStrategy(abstractStrategy):
         return "player chooses envelope"
 
 
-class Automatic_BaseStrategy(abstractStrategy):
+class Automatic_BaseStrategy:
     def __init__(self, envelopes):
         self.envelopes = envelopes
+
+    def play(self):
+        int = random.randint(0,99)
+        while self.envelopes[int].used==True:
+            int = random.randint(0, 99)
+        return self.envelopes[int]
+
+    def display(self):
+        return "select random envelop"
 
 
 class N_max_strategy(abstractStrategy):
@@ -43,14 +53,16 @@ class N_max_strategy(abstractStrategy):
     def play(self):
         max = 0  # most money
         num = 0  # number of envelopes with more money then previous
+        e = self.envelopes[0]
         for i in self.envelopes:
             if num >= self.N:
                 break
-            if i.money > max:
+            if (i.money > max) and (i.used == False):
                 max = i.money
+                e = i
                 num += 1
             self.envelopes[i].used = True
-        return max
+        return e
 
 
 class More_then_N_percent_group_strategy(abstractStrategy):
@@ -66,8 +78,9 @@ class More_then_N_percent_group_strategy(abstractStrategy):
                 max = self.envelopes[i].money
             self.envelopes[i].used = True
         for j in range(num, len(self.envelopes)):
-            if self.envelopes[j].money > max:
+            if (self.envelopes[j].money > max) and (self.envelopes[j].used == False):
                 return self.envelopes[j]
             self.envelopes[j].used = True
+        return self.envelopes
     def display(self):
         return "find the envelope with more money that in the highest of N% group"
